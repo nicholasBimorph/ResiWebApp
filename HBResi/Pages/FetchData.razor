@@ -1,46 +1,30 @@
 ﻿@page "/fetchdata"
 
-@using HBResi.Data
-@inject WeatherForecastService ForecastService
 
-<h1>Weather forecast</h1>
+@using Bimorph.WebApi.Core
+@inject WebClientService WebClientService
+@inject BimorphTypeFactory BimorphTypeFactory
+
+<h1>Get Bimorph Object Test</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+
+<input placeholder="Bimorh object Id" @bind="BimorphId" />
+<button class="btn btn-primary" @onclick="this.FetchDataCollectionFromServer">Fetch </button>
 
 @code {
-    private WeatherForecast[] forecasts;
 
-    protected override async Task OnInitializedAsync()
+    [Parameter]
+    public string BimorphId { get; set; }
+
+    public void FetchDataCollectionFromServer()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        string urlGetBy = "https://localhost:44360/DataNodes/"+BimorphId;
+
+        string jObject = WebClientService.GetRequest(urlGetBy);
+
+       var objects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+
     }
 }

@@ -89,6 +89,13 @@ using HBResi.Data;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 4 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\FetchData.razor"
+using Bimorph.WebApi.Core;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/fetchdata")]
     public partial class FetchData : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -98,19 +105,27 @@ using HBResi.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 39 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\FetchData.razor"
+#line 16 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\FetchData.razor"
        
-    private WeatherForecast[] forecasts;
 
-    protected override async Task OnInitializedAsync()
+    [Parameter]
+    public string BimorphId { get; set; }
+
+    public void FetchDataCollectionFromServer()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        string urlGetBy = "https://localhost:44360/DataNodes/"+BimorphId;
+
+        string jObject = WebClientService.GetRequest(urlGetBy);
+
+       var objects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+
     }
 
 #line default
 #line hidden
 #nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private WeatherForecastService ForecastService { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private BimorphTypeFactory BimorphTypeFactory { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private WebClientService WebClientService { get; set; }
     }
 }
 #pragma warning restore 1591
