@@ -83,13 +83,6 @@ using HBResi.Shared;
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\FetchData.razor"
-using HBResi.Data;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
 #line 4 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\FetchData.razor"
 using Bimorph.WebApi.Core;
 
