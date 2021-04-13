@@ -481,6 +481,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "MongoDB.Bson >= 2.12.2",
       "MongoDB.Driver >= 2.12.2",
       "Newtonsoft.Json >= 13.0.1"
     ]
@@ -528,6 +529,10 @@
       "net5.0": {
         "targetAlias": "net5.0",
         "dependencies": {
+          "MongoDB.Bson": {
+            "target": "Package",
+            "version": "[2.12.2, )"
+          },
           "MongoDB.Driver": {
             "target": "Package",
             "version": "[2.12.2, )"

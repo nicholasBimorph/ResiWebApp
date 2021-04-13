@@ -1,0 +1,80 @@
+﻿@page "/residashboard"
+
+
+@using Bimorph.WebApi.Core
+@using Bimorph.WebApi.Core.Types
+@inject WebClientService WebClientService
+@inject BimorphTypeFactory BimorphTypeFactory
+
+<h1>Get Bimorph Object Test</h1>
+
+<p>A razor component which comunicates with the Bimorph Web API.</p>
+
+
+<input placeholder="Bimorph object Id" @bind="BimorphId" />
+<button class="btn btn-primary" @onclick="this.FetchDataCollectionFromServer">Fetch </button>
+
+<br />
+<br />
+<br />
+
+@if (BimorphObjects == null)
+{
+   // <p><em> Loading...</em></p>
+}
+
+else
+{
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Area</th>
+                <th> Level</th>
+                <th> Block</th>
+                <th> Unit Type</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+        @foreach (var bimorphObject in BimorphObjects)
+        {
+            if (bimorphObject is BimorphArea area)
+            {
+                <tr>
+                    <td>@area.Area</td>
+                    <td>@area.Level</td>
+                    <td>@area.Block</td>
+                    <td>@area.UnitType</td>
+                </tr>
+            }
+        }
+
+        </tbody>
+
+
+    </table>
+}
+
+
+
+@code {
+
+    [Parameter]
+    public string BimorphId { get; set; }
+
+    IList<IBimorphObject> BimorphObjects;
+
+    public void FetchDataCollectionFromServer()
+    {
+        string urlGetBy = "https://localhost:44360/DataNodes/"+BimorphId;
+
+        string jObject = WebClientService.GetRequest(urlGetBy);
+
+        BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+
+    }
+}

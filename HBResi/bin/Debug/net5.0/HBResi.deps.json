@@ -33,6 +33,7 @@
     ".NETCoreApp,Version=v5.0": {
       "HBResi/1.0.0": {
         "dependencies": {
+          "MongoDB.Bson": "2.12.2",
           "MongoDB.Driver": "2.12.2",
           "Newtonsoft.Json": "13.0.1",
           "Bimorph.WebApi.Core": "1.0.0.0",
