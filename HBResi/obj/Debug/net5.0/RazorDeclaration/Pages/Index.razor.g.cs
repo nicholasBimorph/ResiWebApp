@@ -82,6 +82,13 @@ using HBResi.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+using ChartJs.Blazor;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
     public partial class Index : Microsoft.AspNetCore.Components.ComponentBase
     {

@@ -3,8 +3,16 @@
 
 @using Bimorph.WebApi.Core
 @using Bimorph.WebApi.Core.Types
+@using ChartJs.Blazor.Common
 @inject WebClientService WebClientService
 @inject BimorphTypeFactory BimorphTypeFactory
+@using ChartJs.Blazor.PieChart
+@using ChartJs.Blazor.Util
+@using System.Drawing
+@using ResiWebApp.Core
+
+
+
 
 <h1>Get Bimorph Object Test</h1>
 
@@ -12,30 +20,37 @@
 
 
 <input placeholder="Bimorph object Id" @bind="BimorphId" />
-<button class="btn btn-primary" @onclick="this.FetchDataCollectionFromServer">Fetch </button>
+<button class="btn btn-primary" @onclick="this.FetchDataCollectionFromServer">Fetch </button> 
+
+<br /> 
+
+@*<button class="btn btn-primary" @onclick="this.CreateAreaPieChart">Create charts </button>*@
+
+<br />
+
+
+@*<label><input type=checkbox name=lost> Lost</label>*@
 
 <br />
 <br />
 <br />
 
-@if (BimorphObjects == null)
+
+@if (BimorphObjects != null)
 {
-   // <p><em> Loading...</em></p>
-}
-
-else
-{
-
-
     <table class="table">
         <thead>
-            <tr>
-                <th> Area</th>
-                <th> Level</th>
-                <th> Block</th>
-                <th> Unit Type</th>
+        <tr>
+            <th> Area</th>
+            <th> Level</th>
+            <th> Block</th>
+            <th> Unit Type</th>
+            <th>Area Type</th>
+            <th>Accessibility Type</th>
+            <th>Space Type</th>
+            <th>Tenure</th>
 
-            </tr>
+        </tr>
         </thead>
 
         <tbody>
@@ -49,6 +64,10 @@ else
                     <td>@area.Level</td>
                     <td>@area.Block</td>
                     <td>@area.UnitType</td>
+                    <td>@area.AreaType</td>
+                    <td>@area.AccessibilityType</td>
+                    <td>@area.SpaceType</td>
+                    <td>@area.Tenure</td>
                 </tr>
             }
         }
@@ -57,24 +76,129 @@ else
 
 
     </table>
+
+    <Chart Config="_config"></Chart>
 }
 
 
 
 @code {
 
+    private PieConfig _config;
+
     [Parameter]
     public string BimorphId { get; set; }
 
+
     IList<IBimorphObject> BimorphObjects;
+
+    List<BimorphArea> bimorphAreaObjects = new List<BimorphArea>();
+
+    List<double> areas = new List<double>();
 
     public void FetchDataCollectionFromServer()
     {
-        string urlGetBy = "https://localhost:44360/DataNodes/"+BimorphId;
+
+        string urlGetBy = ApiEndPoints.GetNodeCollectionByIdEndPoint + BimorphId;
 
         string jObject = WebClientService.GetRequest(urlGetBy);
 
         BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
 
+
+        this.CreateAreaPieChart();
+
     }
+
+
+
+    private void CreateAreaPieChart()
+    {
+       
+        this.ConfigurePiChart();
+
+        this.CreatePieChartLabels();
+
+        this.CreatePieChartDataSet(areas);
+
+    }
+
+
+    private void ConfigurePiChart()
+    {
+        _config = new PieConfig
+        {
+            Options = new PieOptions
+            {
+                Responsive = true,
+                AspectRatio = 3,
+
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Areas by unit types"
+                }
+            }
+        };
+    }
+
+    private void CreatePieChartLabels()
+    {
+        foreach (var bimorphObject in BimorphObjects)
+        {
+            if (bimorphObject is BimorphArea area)
+            {
+                bimorphAreaObjects.Add(area);
+
+                string unitType = area.UnitType;
+
+                string areaValue = area.Area;
+
+                var areaCharArray = areaValue.ToCharArray();
+
+                var filtered = areaCharArray.Where(c => char.IsDigit(c)).ToArray();
+
+                if (double.TryParse(filtered, out double result))
+                {
+                    if (unitType == null || unitType == " " || unitType == "")
+                        continue;
+
+                    areas.Add(result);
+
+                    _config.Data.Labels.Add(unitType);
+                }
+            }
+        }
+
+    }
+
+
+    private void CreatePieChartDataSet(IList<double> data )
+    {
+        PieDataset<double> areaDataSet = new PieDataset<double>(data);
+
+        double totalAreaObjects = data.Count;
+
+        var colors = new string[data.Count];
+
+        var colorToLerpFrom = Color.FromArgb(255, 170, 0, 200);
+
+        var colorToLerpTo = Color.FromArgb(255, 8, 130, 212);
+
+        for (int i = 0; i < totalAreaObjects; i++)
+        {
+            double t = i / totalAreaObjects;
+
+            var color = colorToLerpFrom.LerpTo(colorToLerpTo, t);
+
+            string colorHex = ColorUtil.ColorHexString(color.R, color.G, color.G);
+
+            colors[i] = colorHex;
+        }
+
+        areaDataSet.BackgroundColor = colors;
+
+        _config.Data.Datasets.Add(areaDataSet);
+    }
+
 }

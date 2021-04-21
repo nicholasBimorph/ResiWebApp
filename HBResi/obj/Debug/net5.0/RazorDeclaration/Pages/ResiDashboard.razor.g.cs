@@ -83,6 +83,13 @@ using HBResi.Shared;
 #line hidden
 #nullable disable
 #nullable restore
+#line 11 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+using ChartJs.Blazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 4 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using Bimorph.WebApi.Core;
 
@@ -96,6 +103,41 @@ using Bimorph.WebApi.Core.Types;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 6 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+using ChartJs.Blazor.Common;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 9 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+using ChartJs.Blazor.PieChart;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 10 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+using ChartJs.Blazor.Util;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 11 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+using System.Drawing;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 12 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+using ResiWebApp.Core;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/residashboard")]
     public partial class ResiDashboard : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -105,23 +147,126 @@ using Bimorph.WebApi.Core.Types;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 64 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 85 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
        
+
+    private PieConfig _config;
 
     [Parameter]
     public string BimorphId { get; set; }
 
+
     IList<IBimorphObject> BimorphObjects;
+
+    List<BimorphArea> bimorphAreaObjects = new List<BimorphArea>();
+
+    List<double> areas = new List<double>();
 
     public void FetchDataCollectionFromServer()
     {
-        string urlGetBy = "https://localhost:44360/DataNodes/"+BimorphId;
+
+        string urlGetBy = ApiEndPoints.GetNodeCollectionByIdEndPoint + BimorphId;
 
         string jObject = WebClientService.GetRequest(urlGetBy);
 
         BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
 
+
+        this.CreateAreaPieChart();
+
     }
+
+
+
+    private void CreateAreaPieChart()
+    {
+       
+        this.ConfigurePiChart();
+
+        this.CreatePieChartLabels();
+
+        this.CreatePieChartDataSet(areas);
+
+    }
+
+
+    private void ConfigurePiChart()
+    {
+        _config = new PieConfig
+        {
+            Options = new PieOptions
+            {
+                Responsive = true,
+                AspectRatio = 3,
+
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Areas by unit types"
+                }
+            }
+        };
+    }
+
+    private void CreatePieChartLabels()
+    {
+        foreach (var bimorphObject in BimorphObjects)
+        {
+            if (bimorphObject is BimorphArea area)
+            {
+                bimorphAreaObjects.Add(area);
+
+                string unitType = area.UnitType;
+
+                string areaValue = area.Area;
+
+                var areaCharArray = areaValue.ToCharArray();
+
+                var filtered = areaCharArray.Where(c => char.IsDigit(c)).ToArray();
+
+                if (double.TryParse(filtered, out double result))
+                {
+                    if (unitType == null || unitType == " " || unitType == "")
+                        continue;
+
+                    areas.Add(result);
+
+                    _config.Data.Labels.Add(unitType);
+                }
+            }
+        }
+
+    }
+
+
+    private void CreatePieChartDataSet(IList<double> data )
+    {
+        PieDataset<double> areaDataSet = new PieDataset<double>(data);
+
+        double totalAreaObjects = data.Count;
+
+        var colors = new string[data.Count];
+
+        var colorToLerpFrom = Color.FromArgb(255, 170, 0, 200);
+
+        var colorToLerpTo = Color.FromArgb(255, 8, 130, 212);
+
+        for (int i = 0; i < totalAreaObjects; i++)
+        {
+            double t = i / totalAreaObjects;
+
+            var color = colorToLerpFrom.LerpTo(colorToLerpTo, t);
+
+            string colorHex = ColorUtil.ColorHexString(color.R, color.G, color.G);
+
+            colors[i] = colorHex;
+        }
+
+        areaDataSet.BackgroundColor = colors;
+
+        _config.Data.Datasets.Add(areaDataSet);
+    }
+
 
 #line default
 #line hidden

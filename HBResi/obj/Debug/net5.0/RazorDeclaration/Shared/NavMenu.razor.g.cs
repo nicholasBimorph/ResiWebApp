@@ -82,6 +82,13 @@ using HBResi.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+using ChartJs.Blazor;
+
+#line default
+#line hidden
+#nullable disable
     public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
