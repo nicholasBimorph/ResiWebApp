@@ -1,4 +1,5 @@
 using Bimorph.WebApi.Core;
+using MatBlazor;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,9 +23,10 @@ namespace HBResi
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddMatBlazor();
 
             services.AddSingleton<ISerializer, JsonSerialization>();
-            services.AddSingleton<WebClientService>();
+            services.AddSingleton<BimorphAPIClientService>();
             services.AddTransient<BimorphTypeFactory>();
         }
 

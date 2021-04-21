@@ -4,7 +4,7 @@
 @using Bimorph.WebApi.Core
 @using Bimorph.WebApi.Core.Types
 @using ChartJs.Blazor.Common
-@inject WebClientService WebClientService
+@inject BimorphAPIClientService BimorphApiClientService
 @inject BimorphTypeFactory BimorphTypeFactory
 @using ChartJs.Blazor.PieChart
 @using ChartJs.Blazor.Util
@@ -14,15 +14,44 @@
 
 
 
+
 <h1>Get Bimorph Object Test</h1>
+
+<br />
+<br />
 
 <p>A razor component which comunicates with the Bimorph Web API.</p>
 
+<br />
+<br />
 
-<input placeholder="Bimorph object Id" @bind="BimorphId" />
-<button class="btn btn-primary" @onclick="this.FetchDataCollectionFromServer">Fetch </button> 
+@*<input placeholder="Bimorph object Id" @bind="BimorphId" />*@
 
-<br /> 
+@*<button class="btn btn-primary" @onclick="this.FetchDataCollectionFromServer">Fetch </button>*@
+
+<MatThemeProvider Theme="@Theme1">
+    
+    <div>
+
+        <MatTextField @bind-Value="@BimorphId" Label="Bimorph object Id"></MatTextField>
+
+        <MatButton OnClick="this.FetchDataCollectionFromServer" Raised="true">Fetch </MatButton>
+
+    </div>
+  
+    <div>
+        <MatCheckbox @bind-Value="@UseLatestStreamId" Label="Get latest stream Id"></MatCheckbox>
+    </div>
+</MatThemeProvider>
+
+@*<MatButton OnClick="this.FetchDataCollectionFromServer" Raised="true">Fetch </MatButton>
+
+    <div>
+        <MatCheckbox @bind-Value="@UseLatestStreamId" Label="Get latest stream Id"></MatCheckbox>
+    </div>*@
+
+
+<br />
 
 @*<button class="btn btn-primary" @onclick="this.CreateAreaPieChart">Create charts </button>*@
 
@@ -40,37 +69,37 @@
 {
     <table class="table">
         <thead>
-        <tr>
-            <th> Area</th>
-            <th> Level</th>
-            <th> Block</th>
-            <th> Unit Type</th>
-            <th>Area Type</th>
-            <th>Accessibility Type</th>
-            <th>Space Type</th>
-            <th>Tenure</th>
+            <tr>
+                <th> Area</th>
+                <th> Level</th>
+                <th> Block</th>
+                <th> Unit Type</th>
+                <th>Area Type</th>
+                <th>Accessibility Type</th>
+                <th>Space Type</th>
+                <th>Tenure</th>
 
-        </tr>
+            </tr>
         </thead>
 
         <tbody>
 
-        @foreach (var bimorphObject in BimorphObjects)
-        {
-            if (bimorphObject is BimorphArea area)
+            @foreach (var bimorphObject in BimorphObjects)
             {
-                <tr>
-                    <td>@area.Area</td>
-                    <td>@area.Level</td>
-                    <td>@area.Block</td>
-                    <td>@area.UnitType</td>
-                    <td>@area.AreaType</td>
-                    <td>@area.AccessibilityType</td>
-                    <td>@area.SpaceType</td>
-                    <td>@area.Tenure</td>
-                </tr>
+                if (bimorphObject is BimorphArea area)
+                {
+                    <tr>
+                        <td>@area.Area</td>
+                        <td>@area.Level</td>
+                        <td>@area.Block</td>
+                        <td>@area.UnitType</td>
+                        <td>@area.AreaType</td>
+                        <td>@area.AccessibilityType</td>
+                        <td>@area.SpaceType</td>
+                        <td>@area.Tenure</td>
+                    </tr>
+                }
             }
-        }
 
         </tbody>
 
@@ -89,6 +118,9 @@
     [Parameter]
     public string BimorphId { get; set; }
 
+    [Parameter]
+    public bool UseLatestStreamId { get; set; }
+
 
     IList<IBimorphObject> BimorphObjects;
 
@@ -96,14 +128,35 @@
 
     List<double> areas = new List<double>();
 
+
+
     public void FetchDataCollectionFromServer()
     {
 
-        string urlGetBy = ApiEndPoints.GetNodeCollectionByIdEndPoint + BimorphId;
 
-        string jObject = WebClientService.GetRequest(urlGetBy);
 
-        BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+        string jObject;
+
+        if (UseLatestStreamId)
+        {
+            string urlGetLatest = ApiEndPoints.GetLatestNodeCollectionEndPoint;
+
+            jObject = BimorphApiClientService.GetRequest(urlGetLatest);
+
+            BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+
+
+        }
+
+        else
+        {
+            string urlGetBy = ApiEndPoints.GetNodeCollectionByIdEndPoint + BimorphId;
+
+            jObject = BimorphApiClientService.GetRequest(urlGetBy);
+
+            BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+        }
+
 
 
         this.CreateAreaPieChart();
@@ -114,7 +167,7 @@
 
     private void CreateAreaPieChart()
     {
-       
+
         this.ConfigurePiChart();
 
         this.CreatePieChartLabels();
@@ -173,7 +226,7 @@
     }
 
 
-    private void CreatePieChartDataSet(IList<double> data )
+    private void CreatePieChartDataSet(IList<double> data)
     {
         PieDataset<double> areaDataSet = new PieDataset<double>(data);
 
@@ -199,6 +252,23 @@
         areaDataSet.BackgroundColor = colors;
 
         _config.Data.Datasets.Add(areaDataSet);
+    }
+
+    public MatTheme Theme1;
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its
+    /// initial parameters from its parent in the render tree.
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        //base.OnInitialized();
+
+        Theme1 = new MatTheme()
+        {
+            Primary = MatThemeColors.DeepOrange._500.Value,
+            Secondary = MatThemeColors.DeepOrange._500.Value
+        };
+
     }
 
 }

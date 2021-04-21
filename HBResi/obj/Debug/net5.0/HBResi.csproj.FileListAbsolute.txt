@@ -12,6 +12,7 @@ C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\HBRe
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\HBResi.Views.pdb
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\ChartJs.Blazor.dll
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\DnsClient.dll
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\MatBlazor.dll
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\MongoDB.Bson.dll
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\MongoDB.Driver.dll
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\MongoDB.Driver.Core.dll
@@ -25,7 +26,10 @@ C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\runt
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\runtimes\osx\native\libmongocrypt.dylib
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\runtimes\win\native\mongocrypt.dll
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\Bimorph.WebApi.Core.dll
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\ResiWebApp.Core.dll
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\Bimorph.WebApi.Core.pdb
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\ResiWebApp.Core.pdb
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.csprojAssemblyReference.cache
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.AssemblyInfoInputs.cache
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.AssemblyInfo.cs
@@ -72,6 +76,3 @@ C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBRe
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\ref\HBResi.dll
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.pdb
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.genruntimeconfig.cache
-C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.csprojAssemblyReference.cache
-C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\ResiWebApp.Core.dll
-C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\bin\Debug\net5.0\ResiWebApp.Core.pdb

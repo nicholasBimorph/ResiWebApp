@@ -90,6 +90,13 @@ using ChartJs.Blazor;
 #line hidden
 #nullable disable
 #nullable restore
+#line 12 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+using MatBlazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 4 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using Bimorph.WebApi.Core;
 
@@ -147,13 +154,16 @@ using ResiWebApp.Core;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 85 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 114 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
        
 
     private PieConfig _config;
 
     [Parameter]
     public string BimorphId { get; set; }
+
+    [Parameter]
+    public bool UseLatestStreamId { get; set; }
 
 
     IList<IBimorphObject> BimorphObjects;
@@ -162,14 +172,35 @@ using ResiWebApp.Core;
 
     List<double> areas = new List<double>();
 
+
+
     public void FetchDataCollectionFromServer()
     {
 
-        string urlGetBy = ApiEndPoints.GetNodeCollectionByIdEndPoint + BimorphId;
 
-        string jObject = WebClientService.GetRequest(urlGetBy);
 
-        BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+        string jObject;
+
+        if (UseLatestStreamId)
+        {
+            string urlGetLatest = ApiEndPoints.GetLatestNodeCollectionEndPoint;
+
+            jObject = BimorphApiClientService.GetRequest(urlGetLatest);
+
+            BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+
+
+        }
+
+        else
+        {
+            string urlGetBy = ApiEndPoints.GetNodeCollectionByIdEndPoint + BimorphId;
+
+            jObject = BimorphApiClientService.GetRequest(urlGetBy);
+
+            BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+        }
+
 
 
         this.CreateAreaPieChart();
@@ -180,7 +211,7 @@ using ResiWebApp.Core;
 
     private void CreateAreaPieChart()
     {
-       
+
         this.ConfigurePiChart();
 
         this.CreatePieChartLabels();
@@ -239,7 +270,7 @@ using ResiWebApp.Core;
     }
 
 
-    private void CreatePieChartDataSet(IList<double> data )
+    private void CreatePieChartDataSet(IList<double> data)
     {
         PieDataset<double> areaDataSet = new PieDataset<double>(data);
 
@@ -267,12 +298,29 @@ using ResiWebApp.Core;
         _config.Data.Datasets.Add(areaDataSet);
     }
 
+    public MatTheme Theme1;
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its
+    /// initial parameters from its parent in the render tree.
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        //base.OnInitialized();
+
+        Theme1 = new MatTheme()
+        {
+            Primary = MatThemeColors.DeepOrange._500.Value,
+            Secondary = MatThemeColors.DeepOrange._500.Value
+        };
+
+    }
+
 
 #line default
 #line hidden
 #nullable disable
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private BimorphTypeFactory BimorphTypeFactory { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private WebClientService WebClientService { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private BimorphAPIClientService BimorphApiClientService { get; set; }
     }
 }
 #pragma warning restore 1591
