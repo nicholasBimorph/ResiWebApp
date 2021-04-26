@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Bimorph.WebApi.Core;
 using MatBlazor;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +25,7 @@ namespace HBResi
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddMatBlazor();
+            services.AddScoped<HttpClient>();
 
             services.AddSingleton<ISerializer, JsonSerialization>();
             services.AddSingleton<BimorphAPIClientService>();

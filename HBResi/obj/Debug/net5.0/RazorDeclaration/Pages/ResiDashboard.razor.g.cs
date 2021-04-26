@@ -140,7 +140,28 @@ using System.Drawing;
 #nullable disable
 #nullable restore
 #line 12 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+using ChartJs.Blazor.Common.Enums;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 13 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using ResiWebApp.Core;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+using ResiWebApp.Core.Extensions;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+using System.Collections.ObjectModel;
 
 #line default
 #line hidden
@@ -154,7 +175,7 @@ using ResiWebApp.Core;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 114 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 105 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
        
 
     private PieConfig _config;
@@ -172,12 +193,14 @@ using ResiWebApp.Core;
 
     List<double> areas = new List<double>();
 
+    private IReadOnlyList<string> _categoryTypes;
 
+    [Parameter]
+    public string SelectedCategory { get; set; }
 
     public void FetchDataCollectionFromServer()
     {
-
-
+        IList<string> categoryTypesTemp = new List<string>();
 
         string jObject;
 
@@ -189,7 +212,25 @@ using ResiWebApp.Core;
 
             BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
 
+            foreach (var bimorphObject in BimorphObjects)
+            {
+                if (bimorphObject is BimorphArea area)
+                {
+                    bimorphAreaObjects.Add(area);
 
+                    string categoryCamelCase =  nameof(area.Block);
+
+                    string categoryName = categoryCamelCase.SplitCamelCase();
+
+                    if (!categoryTypesTemp.Contains(categoryName))
+                    {
+                        categoryTypesTemp.Add(categoryName);
+                    }
+                }
+
+            }
+
+            _categoryTypes = new ReadOnlyCollection<string>(categoryTypesTemp);
         }
 
         else
@@ -199,6 +240,12 @@ using ResiWebApp.Core;
             jObject = BimorphApiClientService.GetRequest(urlGetBy);
 
             BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+
+            foreach (var bimorphObject in BimorphObjects)
+            {
+                if (bimorphObject is BimorphArea area)
+                    bimorphAreaObjects.Add(area);
+            }
         }
 
 
@@ -228,43 +275,55 @@ using ResiWebApp.Core;
             Options = new PieOptions
             {
                 Responsive = true,
-                AspectRatio = 3,
+                //AspectRatio = 3,
+
+
+                Legend = new Legend
+                {
+                    Display = true,
+                    FullWidth = false,
+                    Position = Position.Left
+
+
+                },
 
                 Title = new OptionsTitle
                 {
                     Display = true,
-                    Text = "Areas by unit types"
+                    Text = "Areas by unit types",
+                    FontStyle = FontStyle.Normal,
+                    FontSize = 15,
+                    Position = Position.Top,
+                    Padding = 70
                 }
+
             }
         };
     }
 
     private void CreatePieChartLabels()
     {
-        foreach (var bimorphObject in BimorphObjects)
+        foreach (var bimorphArea in bimorphAreaObjects)
         {
-            if (bimorphObject is BimorphArea area)
+
+            string unitType = bimorphArea.UnitType;
+
+            string areaValue = bimorphArea.Area;
+
+            var areaCharArray = areaValue.ToCharArray();
+
+            var filtered = areaCharArray.Where(c => char.IsDigit(c)).ToArray();
+
+            if (double.TryParse(filtered, out double result))
             {
-                bimorphAreaObjects.Add(area);
+                if (unitType == null || unitType == " " || unitType == "")
+                    continue;
 
-                string unitType = area.UnitType;
+                areas.Add(result);
 
-                string areaValue = area.Area;
-
-                var areaCharArray = areaValue.ToCharArray();
-
-                var filtered = areaCharArray.Where(c => char.IsDigit(c)).ToArray();
-
-                if (double.TryParse(filtered, out double result))
-                {
-                    if (unitType == null || unitType == " " || unitType == "")
-                        continue;
-
-                    areas.Add(result);
-
-                    _config.Data.Labels.Add(unitType);
-                }
+                _config.Data.Labels.Add(unitType);
             }
+
         }
 
     }
@@ -305,12 +364,13 @@ using ResiWebApp.Core;
     /// </summary>
     protected override void OnInitialized()
     {
-        //base.OnInitialized();
+        base.OnInitialized();
 
         Theme1 = new MatTheme()
         {
             Primary = MatThemeColors.DeepOrange._500.Value,
-            Secondary = MatThemeColors.DeepOrange._500.Value
+            Secondary = MatThemeColors.DeepOrange._500.Value,
+
         };
 
     }
