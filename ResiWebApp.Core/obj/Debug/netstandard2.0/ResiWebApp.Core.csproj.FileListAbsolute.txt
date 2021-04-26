@@ -1,0 +1,8 @@
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\bin\Debug\netstandard2.0\ResiWebApp.Core.deps.json
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\bin\Debug\netstandard2.0\ResiWebApp.Core.dll
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\bin\Debug\netstandard2.0\ResiWebApp.Core.pdb
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\obj\Debug\netstandard2.0\ResiWebApp.Core.AssemblyInfoInputs.cache
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\obj\Debug\netstandard2.0\ResiWebApp.Core.AssemblyInfo.cs
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\obj\Debug\netstandard2.0\ResiWebApp.Core.csproj.CoreCompileInputs.cache
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\obj\Debug\netstandard2.0\ResiWebApp.Core.dll
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\obj\Debug\netstandard2.0\ResiWebApp.Core.pdb

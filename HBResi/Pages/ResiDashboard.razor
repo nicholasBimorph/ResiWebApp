@@ -1,0 +1,304 @@
+﻿@page "/residashboard"
+
+
+@using Bimorph.WebApi.Core
+@using Bimorph.WebApi.Core.Types
+@using ChartJs.Blazor.Common
+@inject BimorphAPIClientService BimorphApiClientService
+@inject BimorphTypeFactory BimorphTypeFactory
+@using ChartJs.Blazor.PieChart
+@using ChartJs.Blazor.Util
+@using System.Drawing
+@using ChartJs.Blazor.Common.Enums
+@using ResiWebApp.Core
+@using ResiWebApp.Core.Extensions
+@using System.Collections.ObjectModel
+
+
+
+
+
+<h1>Get Bimorph Object Test</h1>
+
+<br />
+<br />
+
+<p>A razor component which comunicates with the Bimorph Web API.</p>
+
+<br />
+<br />
+
+
+<MatThemeProvider Theme="@Theme1">
+
+    <div>
+
+        <MatTextField @bind-Value="@BimorphId" Label="Bimorph object Id"></MatTextField>
+
+        <MatButton OnClick="this.FetchDataCollectionFromServer" Raised="true">Fetch </MatButton>
+
+    </div>
+
+    <div>
+        <MatCheckbox @bind-Value="@UseLatestStreamId" Label="Get latest stream Id"></MatCheckbox>
+    </div>
+</MatThemeProvider>
+
+
+
+
+<br />
+<br />
+<br />
+
+
+@if (bimorphAreaObjects.Count!=0)
+{
+
+    <MatThemeProvider Theme="@Theme1">
+
+
+        <MatSelectItem @bind-Value="SelectedCategory" Items="_categoryTypes" Label="Category type"/>
+        
+        <br />
+        <br />
+        <br />
+
+
+        <MatTable Items="@bimorphAreaObjects" FilterByColumnName="@SelectedCategory" SearchTermFieldLabel="Search by category value">
+            <MatTableHeader >
+                <th>Area</th>
+                <th>Plot</th>
+                <th>Level</th>
+                <th>Block</th>
+                <th>Unit Type</th>
+                <th>Area Type</th>
+                <th>Accessibility Type</th>
+                <th>Space Type</th>
+                <th>Tenure</th>
+
+            </MatTableHeader>
+            <MatTableRow>
+                <td>@context.Area </td> @*style="font-size: 12px;"*@
+                <td>@context.Plot</td>
+                <td>@context.Level</td>
+                <td>@context.Block</td>
+                <td>@context.UnitType</td>
+                <td>@context.AreaType</td>
+                <td>@context.AccessibilityType</td>
+                <td>@context.SpaceType</td>
+                <td>@context.Tenure</td>
+            </MatTableRow>
+        </MatTable>
+
+    </MatThemeProvider>
+
+    <br />
+    <br />
+    <br />
+
+    <Chart Config="_config"></Chart>
+}
+
+
+
+@code {
+
+    private PieConfig _config;
+
+    [Parameter]
+    public string BimorphId { get; set; }
+
+    [Parameter]
+    public bool UseLatestStreamId { get; set; }
+
+
+    IList<IBimorphObject> BimorphObjects;
+
+    List<BimorphArea> bimorphAreaObjects = new List<BimorphArea>();
+
+    List<double> areas = new List<double>();
+
+    private IReadOnlyList<string> _categoryTypes;
+
+    [Parameter]
+    public string SelectedCategory { get; set; }
+
+    public void FetchDataCollectionFromServer()
+    {
+        IList<string> categoryTypesTemp = new List<string>();
+
+        string jObject;
+
+        if (UseLatestStreamId)
+        {
+            string urlGetLatest = ApiEndPoints.GetLatestNodeCollectionEndPoint;
+
+            jObject = BimorphApiClientService.GetRequest(urlGetLatest);
+
+            BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+
+            foreach (var bimorphObject in BimorphObjects)
+            {
+                if (bimorphObject is BimorphArea area)
+                {
+                    bimorphAreaObjects.Add(area);
+
+                    string categoryCamelCase =  nameof(area.Block);
+
+                    string categoryName = categoryCamelCase.SplitCamelCase();
+
+                    if (!categoryTypesTemp.Contains(categoryName))
+                    {
+                        categoryTypesTemp.Add(categoryName);
+                    }
+                }
+
+            }
+
+            _categoryTypes = new ReadOnlyCollection<string>(categoryTypesTemp);
+        }
+
+        else
+        {
+            string urlGetBy = ApiEndPoints.GetNodeCollectionByIdEndPoint + BimorphId;
+
+            jObject = BimorphApiClientService.GetRequest(urlGetBy);
+
+            BimorphObjects = BimorphTypeFactory.CreateBimorphObjects(jObject);
+
+            foreach (var bimorphObject in BimorphObjects)
+            {
+                if (bimorphObject is BimorphArea area)
+                    bimorphAreaObjects.Add(area);
+            }
+        }
+
+
+
+        this.CreateAreaPieChart();
+
+    }
+
+
+
+    private void CreateAreaPieChart()
+    {
+
+        this.ConfigurePiChart();
+
+        this.CreatePieChartLabels();
+
+        this.CreatePieChartDataSet(areas);
+
+    }
+
+
+    private void ConfigurePiChart()
+    {
+        _config = new PieConfig
+        {
+            Options = new PieOptions
+            {
+                Responsive = true,
+                //AspectRatio = 3,
+
+
+                Legend = new Legend
+                {
+                    Display = true,
+                    FullWidth = false,
+                    Position = Position.Left
+
+
+                },
+
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Areas by unit types",
+                    FontStyle = FontStyle.Normal,
+                    FontSize = 15,
+                    Position = Position.Top,
+                    Padding = 70
+                }
+
+            }
+        };
+    }
+
+    private void CreatePieChartLabels()
+    {
+        foreach (var bimorphArea in bimorphAreaObjects)
+        {
+
+            string unitType = bimorphArea.UnitType;
+
+            string areaValue = bimorphArea.Area;
+
+            var areaCharArray = areaValue.ToCharArray();
+
+            var filtered = areaCharArray.Where(c => char.IsDigit(c)).ToArray();
+
+            if (double.TryParse(filtered, out double result))
+            {
+                if (unitType == null || unitType == " " || unitType == "")
+                    continue;
+
+                areas.Add(result);
+
+                _config.Data.Labels.Add(unitType);
+            }
+
+        }
+
+    }
+
+
+    private void CreatePieChartDataSet(IList<double> data)
+    {
+        PieDataset<double> areaDataSet = new PieDataset<double>(data);
+
+        double totalAreaObjects = data.Count;
+
+        var colors = new string[data.Count];
+
+        var colorToLerpFrom = Color.FromArgb(255, 170, 0, 200);
+
+        var colorToLerpTo = Color.FromArgb(255, 8, 130, 212);
+
+        for (int i = 0; i < totalAreaObjects; i++)
+        {
+            double t = i / totalAreaObjects;
+
+            var color = colorToLerpFrom.LerpTo(colorToLerpTo, t);
+
+            string colorHex = ColorUtil.ColorHexString(color.R, color.G, color.G);
+
+            colors[i] = colorHex;
+        }
+
+        areaDataSet.BackgroundColor = colors;
+
+        _config.Data.Datasets.Add(areaDataSet);
+    }
+
+    public MatTheme Theme1;
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its
+    /// initial parameters from its parent in the render tree.
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Theme1 = new MatTheme()
+        {
+            Primary = MatThemeColors.DeepOrange._500.Value,
+            Secondary = MatThemeColors.DeepOrange._500.Value,
+
+        };
+
+    }
+
+}
