@@ -189,7 +189,7 @@ using Microsoft.AspNetCore.Server.IIS.Core;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 137 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 104 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
        
 
     private PieConfig _config;
@@ -212,6 +212,8 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 
 
             this.Filter();
+
+            this.CreateAreaPieChart();
 
         }
     }
@@ -265,7 +267,7 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 
 
             var paramsWithDesiredValues = selectedCategoryParams
-                .Where(p => (string) p.Value == ValueToFilterBy);
+                .Where(p => (string)p.Value == ValueToFilterBy);
 
             if (paramsWithDesiredValues.Any())
             {
@@ -274,7 +276,7 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 
         }
 
-        if(isValueToFilterByValid)
+        if (isValueToFilterByValid)
             bimorphAreaObjects = filteredObjects;
     }
 
@@ -347,7 +349,7 @@ using Microsoft.AspNetCore.Server.IIS.Core;
     }
 
     /// <summary>
-    /// Extracts all the column header categories that will be available 
+    /// Extracts all the column header categories that will be available
     /// </summary>
     /// <param name="bimorphObject"></param>
     /// <returns></returns>
@@ -380,6 +382,7 @@ using Microsoft.AspNetCore.Server.IIS.Core;
         this.CreatePieChartLabels();
 
         this.CreatePieChartDataSet(areas);
+
 
     }
 
@@ -424,31 +427,26 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 
             var parameters = bimorphArea.Parameters;
 
-            foreach (var parameter in parameters)
-            {
-                if (parameter.Name == "Unit Type")
-                {
+            var unitTypeParameter = parameters.Find(p => p.Name == "Unit Type");
+            string unitTypeValue = (string)unitTypeParameter.Value;
 
-                }
+            var areaParameter = parameters.Find(p => p.Name == "Area");
+            string areaValue = (string)areaParameter.Value;
+
+            var areaCharArray = areaValue.ToCharArray();
+
+            var filtered = areaCharArray.Where(c => char.IsDigit(c)).ToArray();
+
+            if (double.TryParse(filtered, out double result))
+            {
+                if (unitTypeValue == null || unitTypeValue == " " || unitTypeValue == "")
+                    continue;
+
+                areas.Add(result);
+
+                _config.Data.Labels.Add(unitTypeValue);
             }
 
-            //string unitType = bimorphArea.UnitType;
-
-            //string areaValue = bimorphArea.Area;
-
-            //var areaCharArray = areaValue.ToCharArray();
-
-            //var filtered = areaCharArray.Where(c => char.IsDigit(c)).ToArray();
-
-            //if (double.TryParse(filtered, out double result))
-            //{
-            //    if (unitType == null || unitType == " " || unitType == "")
-            //        continue;
-
-            //    areas.Add(result);
-
-            //    _config.Data.Labels.Add(unitType);
-            //}
 
         }
 
