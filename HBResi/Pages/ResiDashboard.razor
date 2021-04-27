@@ -17,18 +17,15 @@
 @using Microsoft.AspNetCore.Server.IIS.Core
 
 
-
-
-
 <h1>Residential Areas Data Dashboard</h1>
 
-<br />
-<br />
+<br/>
+<br/>
 
 <p>Fetch a Revit data file.</p>
 
-<br />
-<br />
+<br/>
+<br/>
 
 
 <MatThemeProvider Theme="@Theme1">
@@ -37,7 +34,7 @@
 
         <MatTextField @bind-Value="@BimorphId" Label="Data Stream Id"></MatTextField>
 
-        <MatButton OnClick="this.FetchDataCollectionFromServer" Raised="true">Fetch </MatButton>
+        <MatButton OnClick="FetchDataCollectionFromServer" Raised="true">Fetch </MatButton>
 
     </div>
 
@@ -47,25 +44,24 @@
 </MatThemeProvider>
 
 
-<br />
-<br />
-<br />
+<br/>
+<br/>
+<br/>
 
 
 @if (bimorphAreaObjects.Count != 0)
 {
-
     <MatThemeProvider Theme="@Theme1">
 
 
-        <MatSelectItem @bind-Value="SelectedCategory" Items="_categoryTypes" Label="Category type" />
+        <MatSelectItem @bind-Value="SelectedCategory" Items="_categoryTypes" Label="Category type"/>
 
 
         <MatTextField Icon="filter_alt" @bind-Value="@ValueToFilterBy" Label="Filter by value"></MatTextField>
 
-        <br />
-        <br />
-        <br />
+        <br/>
+        <br/>
+        <br/>
 
         <MatTable Items="@bimorphAreaObjects">
             <MatTableHeader>
@@ -81,10 +77,9 @@
 
 
                 @foreach (var parameter in context.Parameters)
-                    {
-
+                {
                     <td>@parameter.Value </td>
-                    }
+                }
 
 
             </MatTableRow>
@@ -92,9 +87,9 @@
 
     </MatThemeProvider>
 
-    <br />
-    <br />
-    <br />
+    <br/>
+    <br/>
+    <br/>
 
     <Chart Config="@_config"></Chart>
 }
@@ -105,7 +100,7 @@
 
     private PieConfig _config;
 
-    private List<BimorphArea> _bimorphAreaCache = new List<BimorphArea>();
+    private readonly List<BimorphArea> _bimorphAreaCache = new List<BimorphArea>();
 
     [Parameter]
     public string BimorphId { get; set; }
@@ -121,39 +116,25 @@
         {
             _valueToFilterBy = value;
 
-
             this.Filter();
 
-            this.CreateAreaPieChart();
-
+            this.RefreshPieChart();
         }
     }
 
     [Parameter]
     public bool UseLatestStreamId { get; set; }
 
-
     IList<IBimorphObject> BimorphObjects;
 
     List<BimorphArea> bimorphAreaObjects = new List<BimorphArea>();
 
-    List<double> areas = new List<double>();
+    readonly List<double> areas = new List<double>();
 
     private IReadOnlyList<string> _categoryTypes;
 
-    private string _selectedCat;
-
     [Parameter]
-    public string SelectedCategory
-    {
-        get => _selectedCat;
-
-        set
-        {
-            _selectedCat = value;
-        }
-    }
-
+    public string SelectedCategory { get; set; }
 
     private void Filter()
     {
@@ -163,7 +144,6 @@
 
         foreach (var bimorphArea in _bimorphAreaCache)
         {
-
             if (!isValueToFilterByValid)
             {
                 bimorphAreaObjects = _bimorphAreaCache;
@@ -176,27 +156,21 @@
             var selectedCategoryParams = parameters
                 .Where(p => p.Name == SelectedCategory);
 
-
             var paramsWithDesiredValues = selectedCategoryParams
-                .Where(p => (string)p.Value == ValueToFilterBy);
+                .Where(p => (string) p.Value == ValueToFilterBy);
 
             if (paramsWithDesiredValues.Any())
             {
                 filteredObjects.Add(bimorphArea);
             }
-
         }
 
         if (isValueToFilterByValid)
             bimorphAreaObjects = filteredObjects;
     }
 
-
-
     public void FetchDataCollectionFromServer()
     {
-
-
         string jObject;
 
         bool extractedCategories = false;
@@ -219,13 +193,11 @@
 
                     if (extractedCategories) continue;
 
-                    _categoryTypes = new ReadOnlyCollection<string>(this.ExtractCategoriesForTable(area));
+                    _categoryTypes = new ReadOnlyCollection<string>(ExtractCategoriesForTable(area));
 
                     extractedCategories = true;
                 }
-
             }
-
         }
 
         else
@@ -246,17 +218,14 @@
 
                     if (extractedCategories) continue;
 
-                    _categoryTypes = new ReadOnlyCollection<string>(this.ExtractCategoriesForTable(area));
+                    _categoryTypes = new ReadOnlyCollection<string>(ExtractCategoriesForTable(area));
 
                     extractedCategories = true;
                 }
             }
         }
 
-
-
-        this.CreateAreaPieChart();
-
+        CreateAreaPieChart();
     }
 
     /// <summary>
@@ -272,9 +241,7 @@
 
         foreach (var parameter in parameters)
         {
-
             string categoryNameCamelcase = parameter.Name;
-
 
             if (!categoryTypesTemp.Contains(categoryNameCamelcase))
                 categoryTypesTemp.Add(categoryNameCamelcase);
@@ -283,20 +250,28 @@
         return categoryTypesTemp;
     }
 
-
-
     private void CreateAreaPieChart()
     {
+        ConfigurePiChart();
 
-        this.ConfigurePiChart();
+        CreatePieChartLabels();
 
-        this.CreatePieChartLabels();
-
-        this.CreatePieChartDataSet(areas);
-
-
+        CreatePieChartDataSet(areas);
     }
 
+    private void RefreshPieChart()
+    {
+        
+        _config.Data.Datasets.Clear();
+
+        _config.Data.Labels.Clear();
+
+        areas.Clear();
+
+        CreatePieChartLabels();
+
+        CreatePieChartDataSet(areas);
+    }
 
     private void ConfigurePiChart()
     {
@@ -305,7 +280,7 @@
             Options = new PieOptions
             {
                 Responsive = true,
-                //AspectRatio = 3,
+    //AspectRatio = 3,
 
 
                 Legend = new Legend
@@ -313,10 +288,7 @@
                     Display = true,
                     FullWidth = false,
                     Position = Position.Left
-
-
                 },
-
                 Title = new OptionsTitle
                 {
                     Display = true,
@@ -326,7 +298,6 @@
                     Position = Position.Top,
                     Padding = 70
                 }
-
             }
         };
     }
@@ -335,14 +306,13 @@
     {
         foreach (var bimorphArea in bimorphAreaObjects)
         {
-
             var parameters = bimorphArea.Parameters;
 
             var unitTypeParameter = parameters.Find(p => p.Name == "Unit Type");
-            string unitTypeValue = (string)unitTypeParameter.Value;
+            string unitTypeValue = (string) unitTypeParameter.Value;
 
             var areaParameter = parameters.Find(p => p.Name == "Area");
-            string areaValue = (string)areaParameter.Value;
+            string areaValue = (string) areaParameter.Value;
 
             var areaCharArray = areaValue.ToCharArray();
 
@@ -357,12 +327,8 @@
 
                 _config.Data.Labels.Add(unitTypeValue);
             }
-
-
         }
-
     }
-
 
     private void CreatePieChartDataSet(IList<double> data)
     {
@@ -393,6 +359,7 @@
     }
 
     public MatTheme Theme1;
+
     /// <summary>
     /// Method invoked when the component is ready to start, having received its
     /// initial parameters from its parent in the render tree.
@@ -401,13 +368,11 @@
     {
         base.OnInitialized();
 
-        Theme1 = new MatTheme()
+        Theme1 = new MatTheme
         {
             Primary = MatThemeColors.DeepOrange._500.Value,
-            Secondary = MatThemeColors.DeepOrange._500.Value,
-
+            Secondary = MatThemeColors.DeepOrange._500.Value
         };
-
     }
 
 }

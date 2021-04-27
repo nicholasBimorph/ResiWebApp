@@ -189,12 +189,12 @@ using Microsoft.AspNetCore.Server.IIS.Core;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 104 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 99 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
        
 
     private PieConfig _config;
 
-    private List<BimorphArea> _bimorphAreaCache = new List<BimorphArea>();
+    private readonly List<BimorphArea> _bimorphAreaCache = new List<BimorphArea>();
 
     [Parameter]
     public string BimorphId { get; set; }
@@ -210,39 +210,25 @@ using Microsoft.AspNetCore.Server.IIS.Core;
         {
             _valueToFilterBy = value;
 
-
             this.Filter();
 
-            this.CreateAreaPieChart();
-
+            this.RefreshPieChart();
         }
     }
 
     [Parameter]
     public bool UseLatestStreamId { get; set; }
 
-
     IList<IBimorphObject> BimorphObjects;
 
     List<BimorphArea> bimorphAreaObjects = new List<BimorphArea>();
 
-    List<double> areas = new List<double>();
+    readonly List<double> areas = new List<double>();
 
     private IReadOnlyList<string> _categoryTypes;
 
-    private string _selectedCat;
-
     [Parameter]
-    public string SelectedCategory
-    {
-        get => _selectedCat;
-
-        set
-        {
-            _selectedCat = value;
-        }
-    }
-
+    public string SelectedCategory { get; set; }
 
     private void Filter()
     {
@@ -252,7 +238,6 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 
         foreach (var bimorphArea in _bimorphAreaCache)
         {
-
             if (!isValueToFilterByValid)
             {
                 bimorphAreaObjects = _bimorphAreaCache;
@@ -265,27 +250,21 @@ using Microsoft.AspNetCore.Server.IIS.Core;
             var selectedCategoryParams = parameters
                 .Where(p => p.Name == SelectedCategory);
 
-
             var paramsWithDesiredValues = selectedCategoryParams
-                .Where(p => (string)p.Value == ValueToFilterBy);
+                .Where(p => (string) p.Value == ValueToFilterBy);
 
             if (paramsWithDesiredValues.Any())
             {
                 filteredObjects.Add(bimorphArea);
             }
-
         }
 
         if (isValueToFilterByValid)
             bimorphAreaObjects = filteredObjects;
     }
 
-
-
     public void FetchDataCollectionFromServer()
     {
-
-
         string jObject;
 
         bool extractedCategories = false;
@@ -308,13 +287,11 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 
                     if (extractedCategories) continue;
 
-                    _categoryTypes = new ReadOnlyCollection<string>(this.ExtractCategoriesForTable(area));
+                    _categoryTypes = new ReadOnlyCollection<string>(ExtractCategoriesForTable(area));
 
                     extractedCategories = true;
                 }
-
             }
-
         }
 
         else
@@ -335,17 +312,14 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 
                     if (extractedCategories) continue;
 
-                    _categoryTypes = new ReadOnlyCollection<string>(this.ExtractCategoriesForTable(area));
+                    _categoryTypes = new ReadOnlyCollection<string>(ExtractCategoriesForTable(area));
 
                     extractedCategories = true;
                 }
             }
         }
 
-
-
-        this.CreateAreaPieChart();
-
+        CreateAreaPieChart();
     }
 
     /// <summary>
@@ -361,9 +335,7 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 
         foreach (var parameter in parameters)
         {
-
             string categoryNameCamelcase = parameter.Name;
-
 
             if (!categoryTypesTemp.Contains(categoryNameCamelcase))
                 categoryTypesTemp.Add(categoryNameCamelcase);
@@ -372,20 +344,28 @@ using Microsoft.AspNetCore.Server.IIS.Core;
         return categoryTypesTemp;
     }
 
-
-
     private void CreateAreaPieChart()
     {
+        ConfigurePiChart();
 
-        this.ConfigurePiChart();
+        CreatePieChartLabels();
 
-        this.CreatePieChartLabels();
-
-        this.CreatePieChartDataSet(areas);
-
-
+        CreatePieChartDataSet(areas);
     }
 
+    private void RefreshPieChart()
+    {
+        
+        _config.Data.Datasets.Clear();
+
+        _config.Data.Labels.Clear();
+
+        areas.Clear();
+
+        CreatePieChartLabels();
+
+        CreatePieChartDataSet(areas);
+    }
 
     private void ConfigurePiChart()
     {
@@ -394,7 +374,7 @@ using Microsoft.AspNetCore.Server.IIS.Core;
             Options = new PieOptions
             {
                 Responsive = true,
-                //AspectRatio = 3,
+    //AspectRatio = 3,
 
 
                 Legend = new Legend
@@ -402,10 +382,7 @@ using Microsoft.AspNetCore.Server.IIS.Core;
                     Display = true,
                     FullWidth = false,
                     Position = Position.Left
-
-
                 },
-
                 Title = new OptionsTitle
                 {
                     Display = true,
@@ -415,7 +392,6 @@ using Microsoft.AspNetCore.Server.IIS.Core;
                     Position = Position.Top,
                     Padding = 70
                 }
-
             }
         };
     }
@@ -424,14 +400,13 @@ using Microsoft.AspNetCore.Server.IIS.Core;
     {
         foreach (var bimorphArea in bimorphAreaObjects)
         {
-
             var parameters = bimorphArea.Parameters;
 
             var unitTypeParameter = parameters.Find(p => p.Name == "Unit Type");
-            string unitTypeValue = (string)unitTypeParameter.Value;
+            string unitTypeValue = (string) unitTypeParameter.Value;
 
             var areaParameter = parameters.Find(p => p.Name == "Area");
-            string areaValue = (string)areaParameter.Value;
+            string areaValue = (string) areaParameter.Value;
 
             var areaCharArray = areaValue.ToCharArray();
 
@@ -446,12 +421,8 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 
                 _config.Data.Labels.Add(unitTypeValue);
             }
-
-
         }
-
     }
-
 
     private void CreatePieChartDataSet(IList<double> data)
     {
@@ -482,6 +453,7 @@ using Microsoft.AspNetCore.Server.IIS.Core;
     }
 
     public MatTheme Theme1;
+
     /// <summary>
     /// Method invoked when the component is ready to start, having received its
     /// initial parameters from its parent in the render tree.
@@ -490,13 +462,11 @@ using Microsoft.AspNetCore.Server.IIS.Core;
     {
         base.OnInitialized();
 
-        Theme1 = new MatTheme()
+        Theme1 = new MatTheme
         {
             Primary = MatThemeColors.DeepOrange._500.Value,
-            Secondary = MatThemeColors.DeepOrange._500.Value,
-
+            Secondary = MatThemeColors.DeepOrange._500.Value
         };
-
     }
 
 

@@ -104,7 +104,7 @@ using MatBlazor;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Shared\NavMenu.razor"
+#line 29 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 
