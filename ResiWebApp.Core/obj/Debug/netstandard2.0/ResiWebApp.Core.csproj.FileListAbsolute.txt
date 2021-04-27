@@ -6,4 +6,3 @@ C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\obj\Debug\ne
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\obj\Debug\netstandard2.0\ResiWebApp.Core.csproj.CoreCompileInputs.cache
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\obj\Debug\netstandard2.0\ResiWebApp.Core.dll
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\obj\Debug\netstandard2.0\ResiWebApp.Core.pdb
-C:\Users\NicholasRawitscher\source\repos\ResiWebApp\ResiWebApp.Core\obj\Debug\netstandard2.0\ResiWebApp.Core.csprojAssemblyReference.cache
