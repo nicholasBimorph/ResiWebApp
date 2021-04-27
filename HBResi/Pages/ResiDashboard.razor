@@ -13,17 +13,19 @@
 @using ResiWebApp.Core
 @using ResiWebApp.Core.Extensions
 @using System.Collections.ObjectModel
+@using System.Runtime.CompilerServices
+@using Microsoft.AspNetCore.Server.IIS.Core
 
 
 
 
 
-<h1>Get Bimorph Object Test</h1>
+<h1>Residential Areas Data Dashboard</h1>
 
 <br />
 <br />
 
-<p>A razor component which comunicates with the Bimorph Web API.</p>
+<p>Fetch a Revit data file.</p>
 
 <br />
 <br />
@@ -33,7 +35,7 @@
 
     <div>
 
-        <MatTextField @bind-Value="@BimorphId" Label="Bimorph object Id"></MatTextField>
+        <MatTextField @bind-Value="@BimorphId" Label="Data Stream Id"></MatTextField>
 
         <MatButton OnClick="this.FetchDataCollectionFromServer" Raised="true">Fetch </MatButton>
 
@@ -59,15 +61,18 @@
 
 
         <MatSelectItem @bind-Value="SelectedCategory" Items="_categoryTypes" Label="Category type"/>
+
+
+        <MatTextField @bind-Value="@ValueToFilterBy" Icon="filter_alt" Label="Filter by value"></MatTextField>
         
         <br />
         <br />
         <br />
 
-
-        <MatTable Items="@bimorphAreaObjects" FilterByColumnName="@SelectedCategory" SearchTermFieldLabel="Search by category value">
+        @*FilterByColumnName="@SelectedCategory" SearchTermFieldLabel="Search by category value"*@ 
+        <MatTable  Items="@bimorphAreaObjects">
             <MatTableHeader >
-                <th>Area</th>
+                @*<th>Area</th>
                 <th>Plot</th>
                 <th>Level</th>
                 <th>Block</th>
@@ -75,19 +80,46 @@
                 <th>Area Type</th>
                 <th>Accessibility Type</th>
                 <th>Space Type</th>
-                <th>Tenure</th>
+                <th>Tenure</th>*@
+                
+                @foreach (var t in _categoryTypes)
+                {
+                   <th>@t </th>
+                }
+
 
             </MatTableHeader>
             <MatTableRow>
-                <td>@context.Area </td> @*style="font-size: 12px;"*@
-                <td>@context.Plot</td>
+                <!--<td>@context.Area </td>--> @*style="font-size: 12px;"*@
+                <!--<td>@context.Plot</td>
                 <td>@context.Level</td>
                 <td>@context.Block</td>
                 <td>@context.UnitType</td>
                 <td>@context.AreaType</td>
                 <td>@context.AccessibilityType</td>
                 <td>@context.SpaceType</td>
-                <td>@context.Tenure</td>
+                <td>@context.Tenure</td>-->
+
+
+                @foreach (var t in context.Parameters)
+                {
+                   
+                    <td>@t.Value </td>
+                 
+                    @*string val = (string) t.Value;
+
+                    if (val == ValueToFilterBy)
+                    {
+                        <td>@val</td>
+                    }
+
+                    if (ValueToFilterBy == "")
+                    {
+                        <td>@val</td>
+                    }*@
+                }
+                
+                
             </MatTableRow>
         </MatTable>
 
@@ -106,8 +138,27 @@
 
     private PieConfig _config;
 
+    private List<BimorphArea> _bimorphAreaCache = new List<BimorphArea>();
+
     [Parameter]
     public string BimorphId { get; set; }
+
+    private string _valueToFilterBy;
+
+    [Parameter]
+    public string ValueToFilterBy
+    {
+        get => _valueToFilterBy;
+
+        set
+        {
+            _valueToFilterBy = value;
+
+
+            this.Filter();
+
+        }
+    }
 
     [Parameter]
     public bool UseLatestStreamId { get; set; }
@@ -121,14 +172,65 @@
 
     private IReadOnlyList<string> _categoryTypes;
 
+    private string _selectedCat;
+
     [Parameter]
-    public string SelectedCategory { get; set; }
+    public string SelectedCategory
+    {
+        get => _selectedCat;
+
+        set
+        {
+            _selectedCat = value;
+        }
+    }
+
+
+    private void Filter()
+    {
+        var filteredObjects = new List<BimorphArea>();
+
+        bool isValueToFilterByValid = ValueToFilterBy != null && ValueToFilterBy != " " && ValueToFilterBy != "";
+
+        foreach (var bimorphArea in _bimorphAreaCache)
+        {
+
+            if (!isValueToFilterByValid)
+            {
+                bimorphAreaObjects = _bimorphAreaCache;
+
+                break;
+            }
+
+            var parameters = bimorphArea.Parameters;
+
+            var selectedCategoryParams = parameters
+                .Where(p => p.Name == SelectedCategory);
+
+
+            var paramsWithDesiredValues = selectedCategoryParams
+                .Where(p => (string) p.Value == ValueToFilterBy);
+
+            if (paramsWithDesiredValues.Any())
+            {
+                filteredObjects.Add(bimorphArea);
+            }
+
+        }
+
+        if(isValueToFilterByValid)
+            bimorphAreaObjects = filteredObjects;
+    }
+
+
 
     public void FetchDataCollectionFromServer()
     {
-        IList<string> categoryTypesTemp = new List<string>();
+
 
         string jObject;
+
+        bool extractedCategories = false;
 
         if (UseLatestStreamId)
         {
@@ -144,19 +246,17 @@
                 {
                     bimorphAreaObjects.Add(area);
 
-                    string categoryCamelCase =  nameof(area.Block);
+                    _bimorphAreaCache.Add(area);
 
-                    string categoryName = categoryCamelCase.SplitCamelCase();
+                    if (extractedCategories) continue;
 
-                    if (!categoryTypesTemp.Contains(categoryName))
-                    {
-                        categoryTypesTemp.Add(categoryName);
-                    }
+                    _categoryTypes = new ReadOnlyCollection<string>(this.ExtractCategoriesForTable(area));
+
+                    extractedCategories = true;
                 }
 
             }
 
-            _categoryTypes = new ReadOnlyCollection<string>(categoryTypesTemp);
         }
 
         else
@@ -170,7 +270,17 @@
             foreach (var bimorphObject in BimorphObjects)
             {
                 if (bimorphObject is BimorphArea area)
+                {
                     bimorphAreaObjects.Add(area);
+
+                    _bimorphAreaCache.Add(area);
+
+                    if (extractedCategories) continue;
+
+                    _categoryTypes = new ReadOnlyCollection<string>(this.ExtractCategoriesForTable(area));
+
+                    extractedCategories = true;
+                }
             }
         }
 
@@ -178,6 +288,30 @@
 
         this.CreateAreaPieChart();
 
+    }
+
+    /// <summary>
+    /// Extracts all the column header categories that will be available 
+    /// </summary>
+    /// <param name="bimorphObject"></param>
+    /// <returns></returns>
+    private IList<string> ExtractCategoriesForTable(BimorphArea bimorphObject)
+    {
+        IList<string> categoryTypesTemp = new List<string>();
+
+        var parameters = bimorphObject.Parameters;
+
+        foreach (var parameter in parameters)
+        {
+
+            string categoryNameCamelcase = parameter.Name;
+
+
+            if (!categoryTypesTemp.Contains(categoryNameCamelcase))
+                categoryTypesTemp.Add(categoryNameCamelcase);
+        }
+
+        return categoryTypesTemp;
     }
 
 
@@ -232,23 +366,33 @@
         foreach (var bimorphArea in bimorphAreaObjects)
         {
 
-            string unitType = bimorphArea.UnitType;
+            var parameters = bimorphArea.Parameters;
 
-            string areaValue = bimorphArea.Area;
-
-            var areaCharArray = areaValue.ToCharArray();
-
-            var filtered = areaCharArray.Where(c => char.IsDigit(c)).ToArray();
-
-            if (double.TryParse(filtered, out double result))
+            foreach (var parameter in parameters)
             {
-                if (unitType == null || unitType == " " || unitType == "")
-                    continue;
+                if (parameter.Name == "Unit Type")
+                {
 
-                areas.Add(result);
-
-                _config.Data.Labels.Add(unitType);
+                }
             }
+
+            //string unitType = bimorphArea.UnitType;
+
+            //string areaValue = bimorphArea.Area;
+
+            //var areaCharArray = areaValue.ToCharArray();
+
+            //var filtered = areaCharArray.Where(c => char.IsDigit(c)).ToArray();
+
+            //if (double.TryParse(filtered, out double result))
+            //{
+            //    if (unitType == null || unitType == " " || unitType == "")
+            //        continue;
+
+            //    areas.Add(result);
+
+            //    _config.Data.Labels.Add(unitType);
+            //}
 
         }
 
