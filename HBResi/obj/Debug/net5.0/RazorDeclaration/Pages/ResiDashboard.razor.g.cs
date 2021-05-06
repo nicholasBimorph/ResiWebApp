@@ -279,6 +279,8 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 
             foreach (var bimorphObject in BimorphObjects)
             {
+                // THIS IS NO LONGER NEEDED, CHECKING IF TYPE
+                // IS BIMORPH AREA.
                 if (bimorphObject is BimorphArea area)
                 {
                     bimorphAreaObjects.Add(area);
