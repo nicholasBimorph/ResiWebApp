@@ -12,20 +12,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Bimorph.WebApi.Core">
-      <HintPath>..\..\Bimorph.WebApi\Bimorph.WebApi.Core\bin\Debug\netstandard2.0\Bimorph.WebApi.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="ResiWebApp.Core">
-      <HintPath>..\ResiWebApp.Core\bin\Debug\netstandard2.0\ResiWebApp.Core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="ChartJs.Blazor.Fork" Version="2.0.2" />
     <PackageReference Include="MatBlazor" Version="2.8.0" />
     <PackageReference Include="MongoDB.Bson" Version="2.12.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.12.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Bimorph.WebApi.Core">
+      <HintPath>..\..\Bimorph.WebApi\Bimorph.WebApi.Core\bin\Debug\netstandard2.0\Bimorph.WebApi.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ResiWebApp.CoreTest">
+      <HintPath>..\ResiWebApp.CoreTest\bin\Debug\net5.0\ResiWebApp.CoreTest.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

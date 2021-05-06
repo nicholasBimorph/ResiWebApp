@@ -29,7 +29,7 @@ namespace HBResi
 
             services.AddSingleton<ISerializer, JsonSerialization>();
             services.AddSingleton<BimorphAPIClientService>();
-            services.AddSingleton<IBimorphFactory, BimorphTypeFactory>();
+            services.AddSingleton<BimorphTypeFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

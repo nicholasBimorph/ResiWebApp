@@ -14,11 +14,23 @@ namespace ResiWebApp.CoreTest
     /// <typeparam name="T"></typeparam>
     public class TableFilter<T> where T: IBimorphObject
     {
+        private string _valueToFilterBy;
+
         /// <summary>
         /// A value to filter by in a table
         /// </summary>
         [Parameter]
-        public string ValueToFilterBy { get; set; }
+        public string ValueToFilterBy
+        {
+            get => _valueToFilterBy;
+
+            set
+            {
+                _valueToFilterBy = value;
+
+                this.Filter();
+            }
+        }
 
         /// <summary>
         /// The category the value used to filter the data
@@ -31,12 +43,12 @@ namespace ResiWebApp.CoreTest
         /// A cache storing all the original data
         /// used to build the table.
         /// </summary>
-        public List<T> BimorphObjectCache { get; private set; }
+        public IList<T> BimorphObjectCache { get; set; }
 
         /// <summary>
         /// The data that is dynamic in the table.
         /// </summary>
-        [Parameter]
+        //[Parameter]
         public IList<T> LiveBimorphObjects { get; set; }
 
         /// <summary>
@@ -45,6 +57,8 @@ namespace ResiWebApp.CoreTest
         public TableFilter()
         {
             this.BimorphObjectCache = new List<T>();
+
+            this.LiveBimorphObjects = new List<T>();
         }
 
         /// <summary>

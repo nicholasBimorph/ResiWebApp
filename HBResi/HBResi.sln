@@ -5,12 +5,12 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBResi", "HBResi.csproj", "{D3FAD65C-5EEC-41AE-A948-0C1A596FCBBB}"
 	ProjectSection(ProjectDependencies) = postProject
-		{1E15A49D-D613-41AD-A92E-9742B34F1B46} = {1E15A49D-D613-41AD-A92E-9742B34F1B46}
+		{23047AC9-66F7-4DE3-82E7-ED5B7E83E3B3} = {23047AC9-66F7-4DE3-82E7-ED5B7E83E3B3}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResiWebApp.Core", "..\ResiWebApp.Core\ResiWebApp.Core.csproj", "{1E15A49D-D613-41AD-A92E-9742B34F1B46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResiWebApp.CoreTest", "..\ResiWebApp.CoreTest\ResiWebApp.CoreTest.csproj", "{23047AC9-66F7-4DE3-82E7-ED5B7E83E3B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResiWebApp.CoreTest", "..\ResiWebApp.CoreTest\ResiWebApp.CoreTest.csproj", "{23047AC9-66F7-4DE3-82E7-ED5B7E83E3B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

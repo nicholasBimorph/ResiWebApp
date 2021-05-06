@@ -1,0 +1,139 @@
+﻿@page "/residashboard2"
+
+@using Bimorph.WebApi.Core
+@using ResiWebApp.CoreTest
+@using System.Collections.ObjectModel
+@inject BimorphAPIClientService BimorphApiClientService
+@inject BimorphTypeFactory BimorphTypeFactory
+
+<h3>ResiDashboardB</h3>
+
+<h1>Residential Areas Data Dashboard</h1>
+
+<br />
+<br />
+
+<p>Fetch a Revit data file.</p>
+
+<br />
+<br />
+
+<MatThemeProvider Theme="@_theme1">
+
+
+
+    <div>
+
+        <MatTextField @bind-Value="@_serverDataCollector.StreamId" Label="Data Stream Id"></MatTextField>
+
+        <MatButton OnClick="@this.FetchDataFromServer" Raised="true">Fetch </MatButton>
+
+    </div>
+
+    <div>
+        <MatCheckbox @bind-Value="@_serverDataCollector.UseLatestStreamId" Label="Get latest stream Id"></MatCheckbox>
+    </div>
+
+</MatThemeProvider>
+
+<br />
+<br />
+<br />
+
+
+@if (_tableFilter.LiveBimorphObjects.Count != 0)
+{
+    <MatThemeProvider Theme="@_theme1">
+
+
+        <MatSelectItem @bind-Value="_tableFilter.CategoryToFilterBy" Items="_categoryTypes" Label="Category type" />
+
+
+        <MatTextField Icon="filter_alt" @bind-Value="@_tableFilter.ValueToFilterBy" Label="Filter by value"></MatTextField>
+
+        <br />
+        <br />
+        <br />
+
+        <MatTable Items="@_tableFilter.LiveBimorphObjects">
+            <MatTableHeader>
+
+                @foreach (var categoryType in _categoryTypes)
+                {
+                    <th>@categoryType </th>
+                }
+
+
+            </MatTableHeader>
+            <MatTableRow>
+
+
+                @foreach (var parameter in context.Parameters)
+                    {
+                    <td>@parameter.Value </td>
+                    }
+
+
+            </MatTableRow>
+        </MatTable>
+
+    </MatThemeProvider>
+
+    <br />
+    <br />
+    <br />
+
+    @*<Chart Config="@_config"></Chart>*@
+}
+
+@code {
+
+    private MatTheme _theme1;
+
+    private ServerDataCollector _serverDataCollector;
+    private TableFilter<IBimorphObject> _tableFilter;
+    private ChartCategoryExtractor _chartCategoryExtractor;
+
+
+    IReadOnlyList<string> _categoryTypes;
+    IList<IBimorphObject> bimorphObjects;
+
+
+    private void FetchDataFromServer()
+    {
+        bimorphObjects = _serverDataCollector.Fetch();
+
+        var categories = _chartCategoryExtractor.Extract(bimorphObjects.First());
+
+        _categoryTypes = new ReadOnlyCollection<string>(categories);
+
+        _tableFilter.BimorphObjectCache = bimorphObjects;
+
+        _tableFilter.LiveBimorphObjects = bimorphObjects;
+    }
+
+    private void FilterTable() => _tableFilter.Filter();
+
+
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its
+    /// initial parameters from its parent in the render tree.
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _theme1 = new MatTheme
+        {
+            Primary = MatThemeColors.DeepOrange._500.Value,
+            Secondary = MatThemeColors.DeepOrange._500.Value
+        };
+
+        _serverDataCollector = new ServerDataCollector(BimorphApiClientService, BimorphTypeFactory);
+
+        _tableFilter = new TableFilter<IBimorphObject>();
+
+        _chartCategoryExtractor = new ChartCategoryExtractor();
+    }
+
+}

@@ -18,6 +18,10 @@ namespace ResiWebApp.CoreTest
 
         private readonly string _getNodeCollectionByIdEndPoint = ApiEndPoints.GetNodeCollectionByIdEndPoint;
 
+        private string _streamId;
+
+        private bool _useLatestStreamId;
+
         /// <summary>
         /// Determines if any data could be fetched from
         /// the BimorphAPI server.
@@ -28,15 +32,25 @@ namespace ResiWebApp.CoreTest
         /// <summary>
         /// Determines if the latest stream id will be used or not.
         /// </summary>
-        [Parameter] 
-        public bool UseLatestStreamId { get; set; }
+        [Parameter]
+        public bool UseLatestStreamId
+        {
+            get => _useLatestStreamId;
+
+            set => _useLatestStreamId = value;
+        }
 
         /// <summary>
         /// The stream Id that should be used
         /// to retrieve data from the BimorphServer.
         /// </summary>
-        [Parameter] 
-        public string StreamId { get; set; }
+        [Parameter]
+        public string StreamId
+        {
+            get => _streamId;
+
+            set => _streamId = value;
+        }
 
         /// <summary>
         /// Construct a <see cref="ServerDataCollector" />.
