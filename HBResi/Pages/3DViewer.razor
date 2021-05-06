@@ -1,0 +1,19 @@
+﻿@page "/3dviewer"
+
+@inject IJSRuntime JSRuntime;
+
+@*<h1> 3D Viewer</h1>*@
+
+<div id="threejscontainer" style="width: 1800px; height: 900px;"></div>
+
+@code {
+
+    protected async override void OnAfterRender(bool firstRender)
+    {
+    // pass reference for JSInvokables
+        await JSRuntime.InvokeAsync<object>("createScene", new object[] { DotNetObjectReference.Create(this) });
+        await JSRuntime.InvokeAsync<object>("createCube", new object[] { });
+        await JSRuntime.InvokeAsync<object>("animate", new object[] { });
+
+    }
+}

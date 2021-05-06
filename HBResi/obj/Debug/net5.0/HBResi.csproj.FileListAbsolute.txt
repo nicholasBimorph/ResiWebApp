@@ -38,6 +38,7 @@ C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBRe
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.RazorComponent.input.cache
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\RazorDeclaration\App.razor.g.cs
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\RazorDeclaration\Pages\3DViewer.razor.g.cs
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\RazorDeclaration\Pages\Counter.razor.g.cs
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\RazorDeclaration\Pages\Index.razor.g.cs
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\RazorDeclaration\Pages\ResiDashboard.razor.g.cs
@@ -52,6 +53,7 @@ C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBRe
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.TagHelpers.output.cache
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\HBResi.RazorCoreGenerate.cache
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\Razor\App.razor.g.cs
+C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\Razor\Pages\3DViewer.razor.g.cs
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\Razor\Pages\Counter.razor.g.cs
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\Razor\Pages\Index.razor.g.cs
 C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\obj\Debug\net5.0\Razor\Pages\ResiDashboard.razor.g.cs
