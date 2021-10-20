@@ -989,23 +989,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\NicholasRawitscher\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\nicho\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\NicholasRawitscher\\source\\repos\\ResiWebApp\\HBResi\\HBResi.csproj",
+      "projectUniqueName": "C:\\Users\\nicho\\Documents\\Bimorph\\Clients\\HB\\Apps\\ResiWebApp\\HBResi\\HBResi.csproj",
       "projectName": "HBResi",
-      "projectPath": "C:\\Users\\NicholasRawitscher\\source\\repos\\ResiWebApp\\HBResi\\HBResi.csproj",
-      "packagesPath": "C:\\Users\\NicholasRawitscher\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\NicholasRawitscher\\source\\repos\\ResiWebApp\\HBResi\\obj\\",
+      "projectPath": "C:\\Users\\nicho\\Documents\\Bimorph\\Clients\\HB\\Apps\\ResiWebApp\\HBResi\\HBResi.csproj",
+      "packagesPath": "C:\\Users\\nicho\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\nicho\\Documents\\Bimorph\\Clients\\HB\\Apps\\ResiWebApp\\HBResi\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\NicholasRawitscher\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\nicho\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1070,7 +1066,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

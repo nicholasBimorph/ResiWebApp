@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "LyYgcH/FVEWiFTePRDdg+IInzyUI69KpbibybwLoP5qmQ2jJqR0MwNiL5R9S65YybA434RWwSKSfJd/MfIU7+w==",
+  "dgSpecHash": "YjN/o/pkqV9yVLz2FqlW/ks1hS6XLLOfXdup4DMDk8PsZhwYrdrPXYhiqqvEJDIEomp7FU5pVFWjSFIcDdaD8A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\NicholasRawitscher\\source\\repos\\ResiWebApp\\ResiWebApp.Core\\ResiWebApp.Core.csproj",
+  "projectFilePath": "C:\\Users\\nicho\\Documents\\Bimorph\\Clients\\HB\\Apps\\ResiWebApp\\ResiWebApp.Core\\ResiWebApp.Core.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\NicholasRawitscher\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\NicholasRawitscher\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "C:\\Users\\nicho\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\nicho\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
   ],
   "logs": []
 }
