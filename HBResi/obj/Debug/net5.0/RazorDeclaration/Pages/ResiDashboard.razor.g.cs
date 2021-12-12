@@ -13,168 +13,168 @@ namespace HBResi.Pages
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 1 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 2 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 3 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 4 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 5 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 6 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 7 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 8 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 9 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using HBResi;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 10 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using HBResi.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 11 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 11 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using ChartJs.Blazor;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 12 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\_Imports.razor"
+#line 12 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\_Imports.razor"
 using MatBlazor;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 4 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using Bimorph.WebApi.Core;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 5 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using Bimorph.WebApi.Core.Types;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 6 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using ChartJs.Blazor.Common;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 9 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using ChartJs.Blazor.PieChart;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 10 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using ChartJs.Blazor.Util;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 11 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 11 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using System.Drawing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 12 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 12 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using ChartJs.Blazor.Common.Enums;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 13 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 13 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using ResiWebApp.Core;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 14 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 14 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using ResiWebApp.Core.Extensions;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 15 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 15 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using System.Collections.ObjectModel;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 16 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 16 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using System.Runtime.CompilerServices;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 17 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 17 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
 using Microsoft.AspNetCore.Server.IIS.Core;
 
 #line default
@@ -189,7 +189,7 @@ using Microsoft.AspNetCore.Server.IIS.Core;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 99 "C:\Users\NicholasRawitscher\source\repos\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
+#line 99 "C:\Users\nicho\Documents\Bimorph\Clients\HB\Apps\ResiWebApp\HBResi\Pages\ResiDashboard.razor"
        
 
     private PieConfig _config;
